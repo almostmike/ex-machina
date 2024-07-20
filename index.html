@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ex Machina Dance Game</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="splash-screen" class="screen">
+            <div class="background"></div>
+            <div class="content">
+                <h1>100% Unofficial Ex Machina Dance Game</h1>
+                <div class="game-description">
+                 <p>***</p>
+                    <p>In the world of Ex Machina, you are Caleb, drawn into Nathan's AI experiment.</p>
+                    <p>Reluctantly, you agree to dance with the AI, Kyoko. Can you keep up with her moves?</p>
+                    <p>Match the sequence of dance steps to progress and uncover the truth.</p>
+                    <p>***</p>
+                </div>
+                <p class="instructions">Instructions: Memorize the sequence of dance moves and recreate them using the arrow keys.</p>
+                <button id="start-button">Start Game</button>
+            </div>
+        </div>
+
+        <div id="game-screen" class="screen hidden">
+            <div id="game-info">
+                <span id="round-display">ROUND 1</span>
+                <span id="score-display">Points: 0</span>
+            </div>
+            <div id="sequence-display"></div>
+            <div id="input-screen" class="hidden">
+                <input type="text" id="sequence-input" maxlength="10" placeholder="↑↓←→">
+                <button id="submit-sequence">Submit</button>
+            </div>
+        </div>
+
+        <div id="game-over-screen" class="screen hidden">
+            <div class="background"></div>
+            <div class="content">
+                <h2>Game Over</h2>
+                <p id="final-score">Final Score: 0</p>
+                <p id="highest-level">Highest Level: 1</p>
+                <button id="play-again-button">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>
