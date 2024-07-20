@@ -4,7 +4,7 @@ let score = 0;
 let sequence = [];
 let playerInput = [];
 const directions = ['up', 'down', 'left', 'right'];
-const initialSequenceLength = 4;
+const initialSequenceLength = 3; // Changed to start with 3 instead of 4
 
 // Volume controls
 const VOLUME_SETTINGS = {
@@ -77,23 +77,12 @@ const roundDisplay = document.getElementById('round-display');
 const scoreDisplay = document.getElementById('score-display');
 
 // Event listeners
-startButton.addEventListener('click', () => {
-    console.log('Start button clicked');
-    startGame();
-});
+startButton.addEventListener('click', startGame);
+submitButton.addEventListener('click', checkSequence);
+playAgainButton.addEventListener('click', startGame);
 
-submitButton.addEventListener('click', () => {
-    console.log('Submit button clicked');
-    checkSequence();
-});
-
-playAgainButton.addEventListener('click', () => {
-    console.log('Play Again button clicked');
-    startGame();
-});
-
-// Add event listener for arrow key input
-document.addEventListener('keydown', (event) => {
+// Keyboard handler
+function handleKeydown(event) {
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
         event.preventDefault(); // Prevent scrolling
         let arrow;
@@ -109,10 +98,11 @@ document.addEventListener('keydown', (event) => {
         }
         if (sequenceInput.value.length === sequence.length) {
             console.log('Sequence complete, checking...');
+            document.removeEventListener('keydown', handleKeydown);
             checkSequence();
         }
     }
-});
+}
 
 // Function to start background music
 function startBackgroundMusic() {
@@ -130,9 +120,21 @@ function startGame() {
     startRound();
 }
 
+// Function to start a new round
 function startRound() {
+    document.removeEventListener('keydown', handleKeydown);
+
     roundDisplay.textContent = `ROUND ${currentRound}`;
-    sequence = generateSequence(initialSequenceLength + currentRound - 1);
+    
+    // Adjust sequence length based on round number
+    let sequenceLength;
+    if (currentRound < 6) {
+        sequenceLength = 2 + currentRound; // Starts at 3 for Round 1, increases by 1 each round
+    } else {
+        sequenceLength = (currentRound - 5) + 2; // Resets to 3 at Round 6, then increases
+    }
+    
+    sequence = generateSequence(sequenceLength);
     
     // Disable input during the round start
     sequenceInput.disabled = true;
@@ -140,10 +142,10 @@ function startRound() {
     // Play a random start round sound
     playRandomSound(roundStartSounds);
     
-    // Wait for 3000ms before starting the sequence
+    // Wait for 2000ms before starting the sequence
     setTimeout(() => {
         displaySequence();
-    }, 3000);
+    }, 2000);
 }
 
 // Function to generate a random sequence
@@ -170,6 +172,7 @@ function displaySequence() {
             sequenceInput.disabled = false;
             sequenceInput.focus();
             console.log('Sequence finished, input enabled');
+            document.addEventListener('keydown', handleKeydown);
         }
     }, 1000);
 }
@@ -211,10 +214,10 @@ function checkSequence() {
     // Display a "Round Complete" message
     sequenceDisplay.innerHTML = 'Round Complete!';
     
-    // Wait for 3000ms before starting the next round
+    // Wait for 2000ms before starting the next round
     setTimeout(() => {
         startRound();
-    }, 3000);
+    }, 2000);
 }
 
 // Function to update the score display
