@@ -130,9 +130,19 @@ function startGame() {
     startRound();
 }
 
+// Function to start a new round
 function startRound() {
     roundDisplay.textContent = `ROUND ${currentRound}`;
-    sequence = generateSequence(initialSequenceLength + currentRound - 1);
+    
+    // Adjust sequence length based on round number
+    let sequenceLength;
+    if (currentRound < 6) {
+        sequenceLength = 2 + currentRound; // Starts at 3 for Round 1, increases by 1 each round
+    } else {
+        sequenceLength = (currentRound - 5) + 2; // Resets to 3 at Round 6, then increases
+    }
+    
+    sequence = generateSequence(sequenceLength);
     
     // Disable input during the round start
     sequenceInput.disabled = true;
@@ -140,10 +150,10 @@ function startRound() {
     // Play a random start round sound
     playRandomSound(roundStartSounds);
     
-    // Wait for 3000ms before starting the sequence
+    // Wait for 2000ms before starting the sequence
     setTimeout(() => {
         displaySequence();
-    }, 3000);
+    }, 2000);
 }
 
 // Function to generate a random sequence
@@ -211,10 +221,10 @@ function checkSequence() {
     // Display a "Round Complete" message
     sequenceDisplay.innerHTML = 'Round Complete!';
     
-    // Wait for 3000ms before starting the next round
+    // Wait for 2000ms before starting the next round
     setTimeout(() => {
         startRound();
-    }, 3000);
+    }, 2000);
 }
 
 // Function to update the score display
