@@ -4,7 +4,7 @@ let score = 0;
 let sequence = [];
 let playerInput = [];
 const directions = ['up', 'down', 'left', 'right'];
-const initialSequenceLength = 4;
+const initialSequenceLength = 3; // Changed to start with 3 instead of 4
 
 // Volume controls
 const VOLUME_SETTINGS = {
@@ -77,23 +77,12 @@ const roundDisplay = document.getElementById('round-display');
 const scoreDisplay = document.getElementById('score-display');
 
 // Event listeners
-startButton.addEventListener('click', () => {
-    console.log('Start button clicked');
-    startGame();
-});
+startButton.addEventListener('click', startGame);
+submitButton.addEventListener('click', checkSequence);
+playAgainButton.addEventListener('click', startGame);
 
-submitButton.addEventListener('click', () => {
-    console.log('Submit button clicked');
-    checkSequence();
-});
-
-playAgainButton.addEventListener('click', () => {
-    console.log('Play Again button clicked');
-    startGame();
-});
-
-// Add event listener for arrow key input
-document.addEventListener('keydown', (event) => {
+// Keyboard handler
+function handleKeydown(event) {
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
         event.preventDefault(); // Prevent scrolling
         let arrow;
@@ -109,10 +98,11 @@ document.addEventListener('keydown', (event) => {
         }
         if (sequenceInput.value.length === sequence.length) {
             console.log('Sequence complete, checking...');
+            document.removeEventListener('keydown', handleKeydown);
             checkSequence();
         }
     }
-});
+}
 
 // Function to start background music
 function startBackgroundMusic() {
@@ -132,6 +122,8 @@ function startGame() {
 
 // Function to start a new round
 function startRound() {
+    document.removeEventListener('keydown', handleKeydown);
+
     roundDisplay.textContent = `ROUND ${currentRound}`;
     
     // Adjust sequence length based on round number
@@ -180,6 +172,7 @@ function displaySequence() {
             sequenceInput.disabled = false;
             sequenceInput.focus();
             console.log('Sequence finished, input enabled');
+            document.addEventListener('keydown', handleKeydown);
         }
     }, 1000);
 }
